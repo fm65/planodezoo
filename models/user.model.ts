@@ -5,25 +5,37 @@ import {
     DataTypes,
     ModelCtor,
     BelongsToSetAssociationMixin,
-    HasManyGetAssociationsMixin, HasManyAddAssociationMixin
+    HasManyGetAssociationsMixin,
+    HasManyAddAssociationMixin,
+    BelongsToManyGetAssociationsMixin,
+    BelongsToManyAddAssociationMixin
 } from "sequelize";
 
 import {SessionInstance} from "./session.model";
+import {SpaceInstance}   from "./space.model";
+import {TicketInstance}   from "./ticket.model";
 
 export interface UserProps {
-    id      : number;
-    name    : string;
-    login   : string;
-    password: string;
-    email   : string;
-    role    : number;
+    id       : number;
+    firstname: string;
+    lastname : string;
+    login    : string;
+    password : string;
+    email    : string;
+    role     : number;
 }
 
 export interface UserCreationProps extends Optional<UserProps, "id"> {}
 
 export interface UserInstance extends Model<UserProps, UserCreationProps>, UserProps {
     getSessions: HasManyGetAssociationsMixin<SessionInstance>;
-    addSession: HasManyAddAssociationMixin<SessionInstance, "id">;
+    addSession : HasManyAddAssociationMixin<SessionInstance, "id">;
+
+    getSpaces: BelongsToManyGetAssociationsMixin<SpaceInstance>;
+    addSpace : BelongsToManyAddAssociationMixin<SpaceInstance, "id">;
+
+    getTickets: HasManyGetAssociationsMixin<TicketInstance>;
+    addTicket : HasManyAddAssociationMixin<TicketInstance, "id">;
 }
 
 export default function(sequelize: Sequelize): ModelCtor<UserInstance> {
@@ -33,7 +45,10 @@ export default function(sequelize: Sequelize): ModelCtor<UserInstance> {
             primaryKey   : true,
             autoIncrement: true
         },
-        name: {
+        firstname: {
+            type  : DataTypes.STRING
+        },
+        lastname: {
             type  : DataTypes.STRING
         },
         login: {
@@ -47,12 +62,7 @@ export default function(sequelize: Sequelize): ModelCtor<UserInstance> {
             type: DataTypes.STRING
         },
         role: {
-            type: DataTypes.INTEGER
+            type : DataTypes.INTEGER //['guest', 'employee', 'veterinary', 'admin']
         }
-    }, {
-        freezeTableName: true,
-        underscored: true,
-        paranoid   : true,
-        timestamps : true
     });
 }

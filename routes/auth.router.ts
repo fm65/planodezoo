@@ -1,4 +1,5 @@
 import express from "express";
+import {check, validationResult} from 'express-validator';
 import {AuthController} from "../controllers/auth.controller";
 import {hash} from "bcrypt";
 import {log} from "util";
@@ -6,23 +7,28 @@ import {log} from "util";
 const authRouter = express.Router();
 
 authRouter.post("/subscribe",
+    check('firstname').isLength({ min: 2 }).isAlpha(),
+    check('lastname').isLength({ min: 2 }).isAlpha(),
+    check('login').isLength({ min: 4 }).isAlphanumeric(),
+    check('password').isLength({ min: 5 }),
+    check('email').isEmail(),
     async function(req, res) {
-    const name     = req.body.name;
-    const login    = req.body.login;
-    const password = req.body.password;
-    const email    = req.body.email;
-    const role     = 0; // 0: guest, 1: employee, 2: admin
-    if( name     === undefined ||
-        login    === undefined ||
-        password === undefined ||
-        email    === undefined) {
-        res.status(400).end();
-        return;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+    const firstname = req.body.firstname;
+    const lastname  = req.body.lastname;
+    const login     = req.body.login;
+    const password  = req.body.password;
+    const email     = req.body.email;
+    const role      = 0; // ['guest', 'employee', 'veterinary', 'admin']
+ 
     const authController = await AuthController.getInstance();
     const passwordHashed = await hash(password, 5);
     const user = await authController.subscribe({
-        name,
+        firstname,
+        lastname,
         login,
         password: passwordHashed,
         email,

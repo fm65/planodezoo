@@ -32,10 +32,5 @@ export default function(sequelize: Sequelize): ModelCtor<SessionInstance> {
             type  : DataTypes.STRING,
             unique: true
         }
-    }, {
-        freezeTableName: true,
-        underscored    : true,
-        paranoid       : true,
-        timestamps     : true
     });
 }
