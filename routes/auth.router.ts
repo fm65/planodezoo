@@ -22,7 +22,7 @@ authRouter.post("/subscribe",
     const login     = req.body.login;
     const password  = req.body.password;
     const email     = req.body.email;
-    const role      = 0; // ['guest', 'employee', 'veterinary', 'admin']
+    const role      = req.body.role; // ['guest', 'employee', 'veterinary', 'admin']
  
     const authController = await AuthController.getInstance();
     const passwordHashed = await hash(password, 5);
@@ -42,14 +42,26 @@ authRouter.post("/subscribe",
     }
 });
 
-authRouter.post("/login", function(req, res) {
+authRouter.post("/login", async function(req, res) {
     const login    = req.body.login;
     const password = req.body.password;
     if(login === undefined || password === undefined) {
         res.status(400).end();
         return;
     }
+    const authController = await AuthController.getInstance();
+    const session = await authController.log(login, password);
+    if(session === null) {
+        res.status(404).end();
+        return;
+    }else {
+        res.json({
+            token:session.token
+        });
+    }
 });
+
+
 
 export {
     authRouter
