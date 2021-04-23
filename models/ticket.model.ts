@@ -19,8 +19,9 @@ export interface TicketProps {
     id        : number;
     name      : string;
     price     : number;
-    date      : string;
-    validation: string;
+    date      : Date;
+    validation: Date;
+    user_id: number;
 }
 
 export interface TicketCreationProps extends Optional<TicketProps, "id"> {}
@@ -51,6 +52,9 @@ export default function(sequelize: Sequelize): ModelCtor<TicketInstance> {
         },
         validation: {
             type: DataTypes.DATE
+        },
+        user_id: {
+            type: DataTypes.NUMBER
         }
     });
 }

@@ -22,7 +22,7 @@ authRouter.post("/subscribe",
     const login     = req.body.login;
     const password  = req.body.password;
     const email     = req.body.email;
-    const role      = req.body.role; // ['guest', 'employee', 'veterinary', 'admin']
+    const role      = req.body.role; // [0: 'guest', 1: 'employee', 2: 'veterinary', 3: 'admin', 4: 'home agent', 5: 'healer', 6:'service agent', 7: 'seller']
  
     const authController = await AuthController.getInstance();
     const passwordHashed = await hash(password, 5);
