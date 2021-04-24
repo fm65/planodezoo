@@ -101,4 +101,6 @@ export class SequelizeManager implements SequelizeManagerProps {
         props.User.belongsToMany(props.Space, {through: 'UserSpace'});
         props.Space.belongsToMany(props.Ticket, {through: 'SpaceTicket'}); //TODO
     }
+
 }
+export * from './spaceTime.model';
