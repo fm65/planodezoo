@@ -88,8 +88,8 @@ export class SequelizeManager implements SequelizeManagerProps {
         props.User.hasMany(props.Session); 
         props.Session.belongsTo(props.User);
         
-        props.User.hasMany(props.Ticket);
-        props.Ticket.belongsTo(props.User);
+        props.User.belongsTo(props.Ticket);
+        props.Ticket.hasMany(props.User);
         
         props.Space.hasMany(props.Animal);
         props.Animal.belongsTo(props.Space);
@@ -99,7 +99,7 @@ export class SequelizeManager implements SequelizeManagerProps {
         props.Space.belongsTo(props.Maintenancebook);
         
         props.User.belongsToMany(props.Space, {through: 'UserSpace'});
-        props.Space.belongsToMany(props.Ticket, {through: 'SpaceTicket'}); //TODO
+        props.Space.belongsToMany(props.Ticket, {through: 'SpaceTicket'});
     }
 
 }

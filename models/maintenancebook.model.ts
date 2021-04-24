@@ -17,8 +17,9 @@ import {SpaceInstance} from "./space.model";
 export interface MaintenancebookProps {
     id     : number;
     date   : string;
+    isDone : boolean;
     comment: string;
-    month  : string;
+    month  : number;
 }
 
 export interface MaintenancebookCreationProps extends Optional<MaintenancebookProps, "id"> {}
@@ -35,11 +36,14 @@ export default function(sequelize: Sequelize): ModelCtor<MaintenancebookInstance
         date: {
             type  : DataTypes.DATE
         },
+        isDone: {
+            type  : DataTypes.BOOLEAN
+        },
         comment: {
             type  : DataTypes.TEXT
         },
         month: {
-            type  : DataTypes.STRING
+            type  : DataTypes.INTEGER
         }
     });
 }

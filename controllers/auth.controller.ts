@@ -2,7 +2,7 @@ import {ModelCtor} from "sequelize";
 import {UserCreationProps, UserInstance} from "../models/user.model";
 import {SessionInstance} from "../models/session.model";
 import {SequelizeManager} from "../models";
-import { compare, hash } from "bcrypt";
+import {compare, hash} from "bcrypt";
 
 export class AuthController {
 

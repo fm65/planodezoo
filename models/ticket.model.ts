@@ -16,45 +16,32 @@ import {UserInstance} from "./user.model";
 import {SpaceInstance} from "./space.model";
 
 export interface TicketProps {
-    id        : number;
-    name      : string;
+    type      : number; // 1: PASS journée, 2: PASS Week-end, 3: PASS Annuel, 4: PASS 1daymonth
     price     : number;
-    date      : Date;
-    validation: Date;
-    user_id: number;
+    date      : string;
 }
 
-export interface TicketCreationProps extends Optional<TicketProps, "id"> {}
+export interface TicketCreationProps extends TicketProps {}
 
 export interface TicketInstance extends Model<TicketProps, TicketCreationProps>, TicketProps {
-    setUser: BelongsToSetAssociationMixin<UserInstance, "id">;
-    getUser: BelongsToGetAssociationMixin<UserInstance>;
+    getUsers: HasManyGetAssociationsMixin<UserInstance>;
+    addUser : HasManyAddAssociationMixin<UserInstance, "id">;
 
     getSpaces: BelongsToManyGetAssociationsMixin<SpaceInstance>;
-    addSpace: BelongsToManyAddAssociationMixin<SpaceInstance, "id">;
+    addSpace : BelongsToManyAddAssociationMixin<SpaceInstance, "id">;
 }
 
 export default function(sequelize: Sequelize): ModelCtor<TicketInstance> {
     return sequelize.define<TicketInstance>("Ticket", {
-        id: {
+        type: {
             type: DataTypes.BIGINT,
-            primaryKey   : true,
-            autoIncrement: true
-        },
-        name: {
-            type  : DataTypes.STRING
+            primaryKey   : true
         },
         price: {
             type  : DataTypes.DOUBLE
         },
         date: {
             type: DataTypes.DATE
-        },
-        validation: {
-            type: DataTypes.DATE
-        },
-        user_id: {
-            type: DataTypes.NUMBER
         }
     });
 }

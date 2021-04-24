@@ -5,6 +5,7 @@ import {
     DataTypes,
     ModelCtor,
     BelongsToSetAssociationMixin,
+    BelongsToGetAssociationMixin,
     HasManyGetAssociationsMixin,
     HasManyAddAssociationMixin,
     BelongsToManyGetAssociationsMixin,
@@ -34,8 +35,8 @@ export interface UserInstance extends Model<UserProps, UserCreationProps>, UserP
     getSpaces: BelongsToManyGetAssociationsMixin<SpaceInstance>;
     addSpace : BelongsToManyAddAssociationMixin<SpaceInstance, "id">;
 
-    getTickets: HasManyGetAssociationsMixin<TicketInstance>;
-    addTicket : HasManyAddAssociationMixin<TicketInstance, "id">;
+    getTickets: BelongsToGetAssociationMixin<TicketInstance>;
+    setTicket: BelongsToSetAssociationMixin<TicketInstance, "type">;
 }
 
 export default function(sequelize: Sequelize): ModelCtor<UserInstance> {

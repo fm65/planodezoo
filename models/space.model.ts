@@ -17,13 +17,13 @@ import {AnimalInstance}          from "./animal.model";
 import {MaintenancebookInstance} from "./maintenancebook.model";
 
 export interface SpaceProps {
-    id            : number;
+    id            : string;
     name          : string;
     description   : string;
     image         : string;
     type          : string;
     capacity      : number;
-    duration      : string;
+    duration      : number;
     opening       : string;
     closing       : string;
     disabledAccess: boolean;
@@ -36,7 +36,7 @@ export interface SpaceInstance extends Model<SpaceProps, SpaceCreationProps>, Sp
     addUser : BelongsToManyAddAssociationMixin<UserInstance, "id">;
 
     getTickets: BelongsToManyGetAssociationsMixin<TicketInstance>;
-    addTicket : BelongsToManyAddAssociationMixin<TicketInstance, "id">;
+    addTicket : BelongsToManyAddAssociationMixin<TicketInstance, "type">;
 
     getAnimals: HasManyGetAssociationsMixin<AnimalInstance>;
     addAnimal : HasManyAddAssociationMixin<AnimalInstance, "id">;
@@ -68,13 +68,13 @@ export default function(sequelize: Sequelize): ModelCtor<SpaceInstance> {
             type: DataTypes.INTEGER
         },
         duration: {
-            type: DataTypes.STRING
+            type: DataTypes.INTEGER
         },
         opening: {
-            type: DataTypes.STRING
+            type: DataTypes.DATE
         },
         closing: {
-            type: DataTypes.STRING
+            type: DataTypes.DATE
         },
         disabledAccess: {
             type: DataTypes.BOOLEAN

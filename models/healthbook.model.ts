@@ -17,6 +17,7 @@ import {AnimalInstance} from "./animal.model";
 export interface HealthbookProps {
     id     : number;
     date   : string;
+    isDone : boolean;
     comment: string;
 }
 
@@ -33,6 +34,9 @@ export default function(sequelize: Sequelize): ModelCtor<HealthbookInstance> {
         },
         date: {
             type  : DataTypes.DATE
+        },
+        isDone: {
+            type  : DataTypes.BOOLEAN
         },
         comment: {
             type  : DataTypes.TEXT
