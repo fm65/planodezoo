@@ -12,7 +12,6 @@ authRouter.post("/subscribe",
     check('login').isLength({ min: 4 }).isAlphanumeric(),
     check('password').isLength({ min: 5 }),
     check('email').isEmail(),
-    isAuth,
     async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -36,8 +35,8 @@ authRouter.post("/subscribe",
         role,
     });
     if(user !== null) {
-        res.status(201).end();
         res.json(user);
+        res.status(201).end();
     } else {
         res.status(409).end();
     }
