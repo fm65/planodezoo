@@ -95,6 +95,18 @@ authRouter.delete("/:id", async function(req,res) {
     }
 })
 
+// authRouter.put("/:id", async function(req,res) {
+//     const authController = await AuthController.getInstance();
+//     const user = await authController.unsuscribe(parseInt(req.params.id));
+//     if(user !== null) {
+//         res.send("Deletion completed");
+//         res.status(200).end();
+//     } else {
+//         res.send("No such user");
+//         res.status(404).end();
+//     }
+// })
+
 export {
     authRouter
 };
