@@ -1,5 +1,7 @@
 import express from 'express';
+import { AuthController } from '../controllers/auth.controller';
 import { SpaceController } from '../controllers/space.controller';
+import { TicketController } from '../controllers/ticket.controller';
 import {DatabaseUtils} from "../database";
 
 const spaceRouter = express.Router();
@@ -21,6 +23,11 @@ spaceRouter.get("/stats/week/:id/:date", async function(req, res) {
     } 
 });
 
-
+spaceRouter.get("/access/:space_id/:user_id", async function(req,res) {
+    const ticketController = await TicketController.getInstance();
+    const userAuthorized = await ticketController.checkValidation(parseInt(req.params.space_id), parseInt(req.params.user_id));
+    console.log(userAuthorized);
+    res.send(userAuthorized);
+})
 
 export default spaceRouter;

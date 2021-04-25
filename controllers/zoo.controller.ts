@@ -25,9 +25,9 @@ export class ZooController {
     }
 
     public async getRoles(): Promise<number[] | null> {
-        const users = await SequelizeManager.getInstance();
+        const userController = await SequelizeManager.getInstance();
         let roles: number[] = [];
-        await users.sequelize.query("SELECT distinct role FROM User u, Session s WHERE u.id = s.user_id", { type: QueryTypes.SELECT }).then(res => {
+        await userController.sequelize.query("SELECT distinct role FROM User u, Session s WHERE u.id = s.user_id", { type: QueryTypes.SELECT }).then(res => {
 
             const json = JSON.stringify(res);
             const result = JSON.parse(json);
