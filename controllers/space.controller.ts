@@ -1,5 +1,8 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
-import { SpaceTimeProps, SpaceTime } from "../models";
+import { SpaceTimeProps, SpaceTime, SequelizeManager } from "../models";
+import {ModelCtor} from "sequelize";
+import {SpaceCreationProps, SpaceInstance} from "../models/space.model";
+ 
 
 export class SpaceController {
     private connection: Connection;
@@ -60,4 +63,40 @@ export class SpaceController {
         return listWeek;
     }
     
+}
+
+
+
+export class _SpaceController {
+ 
+    Space : ModelCtor<SpaceInstance>;
+ 
+    private static instance: _SpaceController;
+ 
+    public static async getInstance(): Promise<_SpaceController> {
+        if(_SpaceController.instance === undefined) {
+            const {Space} = await SequelizeManager.getInstance();
+            _SpaceController.instance = new _SpaceController(Space);
+        }
+        return _SpaceController.instance;
+    }
+ 
+    private constructor(Space: ModelCtor<SpaceInstance>) {
+        this.Space = Space;
+    }
+ 
+    /*public async getAll(): Promise<SpaceInstance | null> {
+ 
+        const spaces = await this.Space.findAll({
+            attributes: ['id', 'name', 'description', 'image', 'type', 'capacity', 'duration', 'opening', 'closing', 'disabledAccess'],
+            limit: 20
+        });
+ 
+        return spaces;
+    }*/
+ 
+    public async create(props: SpaceCreationProps):
+        Promise<SpaceInstance | null> {
+        return this.Space.create(props);
+    }
 }

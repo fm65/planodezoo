@@ -1,5 +1,6 @@
 import express from "express";
 import { ZooController } from "../controllers/zoo.controller";
+import { isAuth } from '../middlewares/auth.middleware';
 
 const zooRouter = express.Router();
 

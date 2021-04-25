@@ -1,8 +1,9 @@
 import express from 'express';
-import { AuthController } from '../controllers/auth.controller';
-import { SpaceController } from '../controllers/space.controller';
+import { check, validationResult } from 'express-validator';
+import { SpaceController, _SpaceController } from '../controllers/space.controller';
 import { TicketController } from '../controllers/ticket.controller';
 import {DatabaseUtils} from "../database";
+import { isAuth } from '../middlewares/auth.middleware';
 
 const spaceRouter = express.Router();
 
@@ -29,5 +30,91 @@ spaceRouter.get("/access/:space_id/:user_id", async function(req,res) {
     res.status(200);
     res.json(userAuthorized);
 })
+
+spaceRouter.put("/", 
+    check('name').isLength({​​​​​​ min: 2 }​​​​​​),
+
+    check('description').isLength({​​​​​​ min: 2 }​​​​​​),
+
+    check('image').isLength({​​​​​​ min: 2 }​​​​​​).isAlphanumeric(),
+
+    check('type').isLength({​​​​​​ min: 2 }​​​​​​),
+
+    check('capacity').isInt(),
+
+    check('duration').isInt(),
+
+    check('opening').isLength({​​​​​​ min: 5 }​​​​​​),
+
+    check('closing').isLength({​​​​​​ min: 5 }​​​​​​),
+
+    check('disabledAccess').isBoolean(),
+
+    isAuth,
+
+    async function(req, res) {​​​​​​
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {​​​​​​
+
+        return res.status(400).json({​​​​​​ errors: errors.array() }​​​​​​);
+
+    }​​​​​​     const name           = req.body.name;
+
+    const description    = req.body.description;
+
+    const image          = req.body.image;
+
+    const type           = req.body.type;
+
+    const capacity       = req.body.capacity;
+
+    const duration       = req.body.duration;
+
+    const opening        = req.body.opening;
+
+    const closing        = req.body.closing;
+
+    const disabledAccess = req.body.disabledAccess;
+
+    const spaceController = await _SpaceController.getInstance();
+
+    const space = await spaceController.create({​​​​​​
+
+        name,
+
+        description,
+
+        image,
+
+        type,
+
+        capacity,
+
+        duration,
+
+        opening,
+
+        closing,
+
+        disabledAccess,
+
+    }​​​​​​);
+
+    if(space !== null) {​​​​​​
+
+        res.status(201);
+
+        res.json(space);
+
+    }​​​​​​ else {​​​​​​
+
+        res.status(409).end();
+
+    }​​​​​​
+
+}​​​​​​);
+
 
 export default spaceRouter;

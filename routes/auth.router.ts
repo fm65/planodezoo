@@ -2,7 +2,7 @@ import express from "express";
 import {check, validationResult} from 'express-validator';
 import {AuthController} from "../controllers/auth.controller";
 import {hash} from "bcrypt";
-import {log} from "util";
+import { isAuth } from '../middlewares/auth.middleware';
 
 const authRouter = express.Router();
 
@@ -12,6 +12,7 @@ authRouter.post("/subscribe",
     check('login').isLength({ min: 4 }).isAlphanumeric(),
     check('password').isLength({ min: 5 }),
     check('email').isEmail(),
+    isAuth,
     async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -83,7 +84,9 @@ authRouter.get("/:id", async function(req,res) {
     }
 })
 
-authRouter.delete("/:id", async function(req,res) {
+authRouter.delete("/:id", 
+isAuth,
+async function(req,res) {
     const authController = await AuthController.getInstance();
     const user = await authController.unsuscribe(parseInt(req.params.id));
     if(user !== null) {
@@ -94,18 +97,6 @@ authRouter.delete("/:id", async function(req,res) {
         res.status(404).end();
     }
 })
-
-// authRouter.put("/:id", async function(req,res) {
-//     const authController = await AuthController.getInstance();
-//     const user = await authController.unsuscribe(parseInt(req.params.id));
-//     if(user !== null) {
-//         res.send("Deletion completed");
-//         res.status(200).end();
-//     } else {
-//         res.send("No such user");
-//         res.status(404).end();
-//     }
-// })
 
 export {
     authRouter

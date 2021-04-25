@@ -1,6 +1,7 @@
 import express from "express";
 import {check, validationResult} from 'express-validator';
 import { AnimalController } from "../controllers/animal.controller";
+import { isAuth } from '../middlewares/auth.middleware';
 
 const animalRouter = express.Router();
 
@@ -8,6 +9,8 @@ animalRouter.post("/add",
     check('name').isLength({ min: 2 }).isAlpha(),
     check('species').isLength({ min: 2 }).isAlpha(),
     check('description').isLength({ min: 4 }).isAlphanumeric(),
+    isAuth,
+
     async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -54,7 +57,9 @@ animalRouter.get("/:id", async function(req,res) {
     }
 })
 
-animalRouter.delete("/:id", async function(req,res) {
+animalRouter.delete("/:id", 
+isAuth,
+async function(req,res) {
     const animalController = await AnimalController.getInstance();
     const animal = await animalController.remove(parseInt(req.params.id));
     if(animal !== null) {

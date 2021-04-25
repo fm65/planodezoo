@@ -2,12 +2,15 @@ import express from "express";
 import { check, validationResult } from "express-validator";
 import { TicketController} from "../controllers/ticket.controller";
 import { DatabaseUtils } from "../database";
+import { isAuth } from '../middlewares/auth.middleware';
 
 const ticketRouter = express.Router();
 
 ticketRouter.post("/add",
     check('type').isLength({ min: 1 }).isNumeric(),
     check('price').isLength({ min: 1 }).isNumeric(),
+    isAuth,
+
     async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -59,7 +62,9 @@ ticketRouter.get("/type/:type", async function(req,res) {
     }
 })
 
-ticketRouter.delete("/:type", async function(req,res) {
+ticketRouter.delete("/:type", 
+isAuth,
+async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const ticket = await ticketController.remove(parseInt(req.params.type));
     if(ticket !== null) {
