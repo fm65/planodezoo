@@ -1,18 +1,15 @@
-import { RowDataPacket, Connection } from "mysql2/promise";
-// import Connection from "mysql2/typings/mysql/lib/Connection";
-import { ModelCtor } from "sequelize";
+import { RowDataPacket} from "mysql2/promise";
+import { ModelCtor, QueryTypes } from "sequelize";
 import { SequelizeManager } from "../models";
 import { SpaceInstance } from "../models/space.model";
 import { TicketCreationProps, TicketInstance } from "../models/ticket.model";
 import { UserInstance } from "../models/user.model";
 import { ZooController } from "./zoo.controller";
-const { QueryTypes } = require('sequelize');
 
 
 export class TicketController {
     private static instance: TicketController;
 
-    
     public static async getInstance(): Promise<TicketController> {
         if (TicketController.instance === undefined) {
             const { Ticket} = await SequelizeManager.getInstance();

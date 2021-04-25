@@ -61,6 +61,17 @@ authRouter.post("/login", async function(req, res) {
     }
 });
 
+authRouter.get("/", async function(req, res) {
+    const authController = await AuthController.getInstance();
+    const users = await authController.getAll();
+    if(users === null) {
+        res.status(404).end();
+        return;
+    }else {
+        console.log(users);
+        res.send(users);
+    }
+});
 
 
 export {

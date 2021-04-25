@@ -1,9 +1,7 @@
-import { ModelCtor } from "sequelize";
+import { ModelCtor, QueryTypes } from "sequelize";
 import { UserInstance } from "../models/user.model";
 import { SessionInstance } from "../models/session.model";
 import { SequelizeManager } from "../models";
-const { QueryTypes } = require('sequelize');
-
 
 export class ZooController {
     User: ModelCtor<UserInstance>;

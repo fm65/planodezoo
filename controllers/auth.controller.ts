@@ -1,4 +1,4 @@
-import {ModelCtor} from "sequelize";
+import {ModelCtor, QueryTypes} from "sequelize";
 import {UserCreationProps, UserInstance} from "../models/user.model";
 import {SessionInstance} from "../models/session.model";
 import {SequelizeManager} from "../models";
@@ -52,5 +52,9 @@ export class AuthController {
         return session;
     }
 
+    public async getAll(): Promise<UserInstance[] | null> {
+        const users = await this.User.findAll();
+        return users;
+    }
 
 }
