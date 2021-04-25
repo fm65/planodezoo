@@ -35,7 +35,7 @@ authRouter.post("/subscribe",
         role,
     });
     if(user !== null) {
-        res.status(201);
+        res.status(201).end();
         res.json(user);
     } else {
         res.status(409).end();
@@ -64,15 +64,36 @@ authRouter.post("/login", async function(req, res) {
 authRouter.get("/", async function(req, res) {
     const authController = await AuthController.getInstance();
     const users = await authController.getAll();
-    if(users === null) {
-        res.status(404).end();
-        return;
+    if(users !== null) {
+        res.status(200);
+        res.json(users);
     }else {
-        console.log(users);
-        res.send(users);
+        res.status(404).end();
     }
 });
 
+authRouter.get("/:id", async function(req,res) {
+    const authController = await AuthController.getInstance();
+    const user = await authController.getById(parseInt(req.params.id));
+    if(user !== null) {
+        res.status(200);
+        res.json(user);
+    } else {
+        res.status(404).end();
+    }
+})
+
+authRouter.delete("/:id", async function(req,res) {
+    const authController = await AuthController.getInstance();
+    const user = await authController.unsuscribe(parseInt(req.params.id));
+    if(user !== null) {
+        res.send("Deletion completed");
+        res.status(200).end();
+    } else {
+        res.send("No such user");
+        res.status(404).end();
+    }
+})
 
 export {
     authRouter

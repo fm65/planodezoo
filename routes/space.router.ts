@@ -26,8 +26,8 @@ spaceRouter.get("/stats/week/:id/:date", async function(req, res) {
 spaceRouter.get("/access/:space_id/:user_id", async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const userAuthorized = await ticketController.checkValidation(parseInt(req.params.space_id), parseInt(req.params.user_id));
-    console.log(userAuthorized);
-    res.send(userAuthorized);
+    res.status(200);
+    res.json(userAuthorized);
 })
 
 export default spaceRouter;

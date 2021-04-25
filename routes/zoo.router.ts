@@ -10,7 +10,7 @@ zooRouter.get("/can-open", async function (req, res) {
         res.status(404).end();
         return;
     } else {
-        console.log(rolesOK);
+        res.status(200);
         res.send(rolesOK);
     }
 });

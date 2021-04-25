@@ -57,4 +57,25 @@ export class AuthController {
         return users;
     }
 
+    public async getById(id: number): Promise<UserInstance | null> {
+        const user = await this.User.findOne({
+            where: {
+                id
+            }
+        })
+        if(user !== null) {
+            return user;
+        }
+        return null;
+    }
+
+    public async unsuscribe(id: number): Promise<UserInstance | null> {
+        const user = await this.getById(id);
+        if(user !== null) {
+            user.destroy();
+            return user;
+        } 
+        return null;
+    }
+
 }
