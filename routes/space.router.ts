@@ -3,7 +3,9 @@ import { check, validationResult } from 'express-validator';
 import { SpaceController, _SpaceController } from '../controllers/space.controller';
 import { TicketController } from '../controllers/ticket.controller';
 import {DatabaseUtils} from "../database";
-import { isAuth } from '../middlewares/auth.middleware';
+import { isAuth, hasRole } from '../middlewares/auth.middleware';
+
+const isAdmin = hasRole(3); 
 
 const spaceRouter = express.Router();
 
@@ -42,7 +44,7 @@ spaceRouter.post("/", 
     check('closing').isLength({​​​​​​ min: 5 }​​​​​​),
     check('disabledAccess').isBoolean(),
     isAuth,
-
+    isAdmin,
     async function(req, res) {​​​​​​
     const errors = validationResult(req);
     if (!errors.isEmpty()) {​​​​​​

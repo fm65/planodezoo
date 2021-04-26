@@ -1,13 +1,15 @@
 import express from "express";
 import {check, validationResult} from 'express-validator';
 import { MaintenancebookController } from "../controllers/maintenancebook.controller";
-import { isAuth } from '../middlewares/auth.middleware';
+import { isAuth, hasRole } from '../middlewares/auth.middleware';
+
+const isEmployee = hasRole(1); 
 
 const maintenancebookRouter = express.Router();
 
 maintenancebookRouter.post("/add",
     isAuth,
-
+    isEmployee,
     async function(req, res) {
     const date      = String(new Date());
     const isDone    = req.body.isDone;

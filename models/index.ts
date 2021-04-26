@@ -63,7 +63,6 @@ export class SequelizeManager implements SequelizeManagerProps {
             
             define: {
                 freezeTableName: true,
-                underscored    : true,
                 paranoid       : true,
                 timestamps     : true
             }

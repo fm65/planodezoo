@@ -1,12 +1,15 @@
 import express from "express";
 import {check, validationResult} from 'express-validator';
 import { HealthbookController } from "../controllers/healthbook.controller";
-import { isAuth } from '../middlewares/auth.middleware';
+import { isAuth, hasRole } from '../middlewares/auth.middleware';
+
+const isVeterinary = hasRole(2); 
 
 const healthbookRouter = express.Router();
 
 healthbookRouter.post("/add",
     isAuth,
+    isVeterinary,
     async function(req, res) {
     const date = String(new Date());
     const isDone  = req.body.isDone;
