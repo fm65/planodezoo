@@ -27,7 +27,10 @@ export class AnimalController {
     }
 
     public async getAll(): Promise<AnimalInstance[] | null> {
-        const animals = await this.Animal.findAll();
+        const animals = await this.Animal.findAll({
+            attributes: ['id', 'name', 'species', 'description'],
+            limit: 20
+        });
         return animals;
     }
 

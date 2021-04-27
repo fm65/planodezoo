@@ -53,7 +53,10 @@ export class AuthController {
     }
 
     public async getAll(): Promise<UserInstance[] | null> {
-        const users = await this.User.findAll();
+        const users = await this.User.findAll({
+            attributes: ['id', 'firstname', 'lastname', 'login', 'password', 'email', 'role'],
+            limit: 20
+        });
         return users;
     }
 

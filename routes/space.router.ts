@@ -9,6 +9,17 @@ const isAdmin = hasRole(3);
 
 const spaceRouter = express.Router();
 
+spaceRouter.get("/", async function(req, res) {
+    const spaceController = await _SpaceController.getInstance();
+    const spaces = await spaceController.getAll();
+    if(spaces !== null) {
+        res.status(200);
+        res.json(spaces);
+    }else {
+        res.status(404).end();
+    }
+});
+
 spaceRouter.get("/stats/:id/:date", async function(req, res) {
     const connection = await DatabaseUtils.getConnection();
     const spaceController = new SpaceController(connection);

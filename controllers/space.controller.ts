@@ -85,15 +85,16 @@ export class _SpaceController {
         this.Space = Space;
     }
  
-    /*public async getAll(): Promise<SpaceInstance | null> {
+    public async getAll(): Promise<SpaceInstance[] | null> {
  
         const spaces = await this.Space.findAll({
-            attributes: ['id', 'name', 'description', 'image', 'type', 'capacity', 'duration', 'opening', 'closing', 'disabledAccess'],
+            attributes: ['id',      'name',       'description', 'image',
+                         'type',    'capacity',   'duration',
+                         'opening', 'closing',    'disabledAccess'],
             limit: 20
         });
- 
         return spaces;
-    }*/
+    }
  
     public async create(props: SpaceCreationProps):
         Promise<SpaceInstance | null> {
