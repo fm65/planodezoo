@@ -4,7 +4,6 @@ import {
     Model,
     DataTypes,
     ModelCtor,
-    BelongsToSetAssociationMixin,
     HasManyGetAssociationsMixin,
     HasManyAddAssociationMixin,
     BelongsToManyGetAssociationsMixin,
@@ -41,8 +40,8 @@ export interface SpaceInstance extends Model<SpaceProps, SpaceCreationProps>, Sp
     getAnimals: HasManyGetAssociationsMixin<AnimalInstance>;
     addAnimal : HasManyAddAssociationMixin<AnimalInstance, "id">;
 
-    getMaintenancebook: BelongsToManyGetAssociationsMixin<MaintenancebookInstance>;
-    addMaintenancebook: BelongsToManyAddAssociationMixin<MaintenancebookInstance, "id">;
+    getMaintenancebooks: HasManyGetAssociationsMixin<MaintenancebookInstance>;
+    addMaintenancebook: HasManyAddAssociationMixin<MaintenancebookInstance, "id">;
 }
 
 export default function(sequelize: Sequelize): ModelCtor<SpaceInstance> {

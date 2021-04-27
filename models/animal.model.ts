@@ -7,9 +7,7 @@ import {
     BelongsToSetAssociationMixin,
     BelongsToGetAssociationMixin,
     HasManyGetAssociationsMixin,
-    HasManyAddAssociationMixin,
-    BelongsToManyGetAssociationsMixin,
-    BelongsToManyAddAssociationMixin
+    HasManyAddAssociationMixin
 } from "sequelize";
 
 import {SpaceInstance} from "./space.model";
@@ -28,8 +26,8 @@ export interface AnimalInstance extends Model<AnimalProps, AnimalCreationProps>,
     setSpace: BelongsToSetAssociationMixin<SpaceInstance, "id">;
     getSpace: BelongsToGetAssociationMixin<SpaceInstance>;
 
-    setUser: BelongsToSetAssociationMixin<HealthbookInstance, "id">;
-    getUser: BelongsToGetAssociationMixin<HealthbookInstance>;
+    getHealthbooks: HasManyGetAssociationsMixin<HealthbookInstance>;
+    addHealthbook: HasManyAddAssociationMixin<HealthbookInstance, "id">;
 }
 
 export default function(sequelize: Sequelize): ModelCtor<AnimalInstance> {

@@ -1,6 +1,6 @@
 import { ModelCtor, QueryTypes } from "sequelize";
 import { SequelizeManager } from "../models";
-import { AnimalCreationProps, AnimalInstance } from "../models/animal.model";
+import animalModel, { AnimalCreationProps, AnimalInstance } from "../models/animal.model";
 
 
 export class AnimalController {

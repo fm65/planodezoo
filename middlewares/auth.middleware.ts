@@ -40,31 +40,24 @@ export const hasRole =  (role: number) => {
 
 			const {User, Session} = await SequelizeManager.getInstance();
 
-			const session = Session.findOne({
-	        	where: {token: bearerToken},
-	        	include: User
-	        }).then((sess) => {
-	        	if (!sess) {
-	        		res.status(401).json();
-	        		return;
-	        	}
-	        	const user = User.findOne({
-	            	where: { id: sess.UserId }
-		        }).then((user) => {
-			        if(!user || (user.role != role)) {
-			        	res.status(401).json();
-			            return;
-			        }
-			    }).catch((err) => {
-					console.log(err);
-					res.status(404).json();
-					return;
-				});          
-	        }).catch((err) => {
-				console.log(err);
+			const session = await Session.findOne({
+	        	where: {token: bearerToken}
+	        });
+			if (session === null) {
 				res.status(401).json();
 				return;
-			});
+			}
+	        const user = await User.findOne({
+	            	where: { id: session.UserId }
+		    });
+			if (user === null) {
+				res.status(401).json();
+				return;
+			}
+			if(!user || (user.role != role)) {
+				res.status(401).json();
+				return;
+			}
 			next();
 		} else {
 			res.sendStatus(403);

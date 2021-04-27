@@ -7,6 +7,8 @@ import ticketCreator, {TicketInstance}                   from "./ticket.model";
 import animalCreator, {AnimalInstance}                   from "./animal.model";
 import healthbookCreator, {HealthbookInstance}           from "./healthbook.model";
 import maintenancebookCreator, {MaintenancebookInstance} from "./maintenancebook.model";
+import userSpaceCreator, {UserSpaceInstance}             from "./userSpace.model";
+import spaceTicketCreator, {SpaceTicketInstance}         from "./spaceTicket.model";
 
 
 export interface SequelizeManagerProps {
@@ -18,6 +20,8 @@ export interface SequelizeManagerProps {
     Animal         : ModelCtor<AnimalInstance>;
     Healthbook     : ModelCtor<HealthbookInstance>;
     Maintenancebook: ModelCtor<MaintenancebookInstance>;
+    UserSpace      : ModelCtor<UserSpaceInstance>;
+    SpaceTicket    : ModelCtor<SpaceTicketInstance>;
 }
 
 export class SequelizeManager implements SequelizeManagerProps {
@@ -32,6 +36,8 @@ export class SequelizeManager implements SequelizeManagerProps {
     Animal         : ModelCtor<AnimalInstance>;
     Healthbook     : ModelCtor<HealthbookInstance>;
     Maintenancebook: ModelCtor<MaintenancebookInstance>;
+    UserSpace      : ModelCtor<UserSpaceInstance>;
+    SpaceTicket    : ModelCtor<SpaceTicketInstance>;
 
     private constructor(props: SequelizeManagerProps) {
         this.sequelize       = props.sequelize;
@@ -42,6 +48,8 @@ export class SequelizeManager implements SequelizeManagerProps {
         this.Animal          = props.Animal;
         this.Healthbook      = props.Healthbook;
         this.Maintenancebook = props.Maintenancebook;
+        this.UserSpace       = props.UserSpace;
+        this.SpaceTicket       = props.SpaceTicket;
 
     }
 
@@ -76,7 +84,9 @@ export class SequelizeManager implements SequelizeManagerProps {
             Ticket         : ticketCreator(sequelize),
             Animal         : animalCreator(sequelize),
             Healthbook     : healthbookCreator(sequelize),
-            Maintenancebook: maintenancebookCreator(sequelize)
+            Maintenancebook: maintenancebookCreator(sequelize),
+            UserSpace      : userSpaceCreator(sequelize),
+            SpaceTicket    : spaceTicketCreator(sequelize)
         }
         SequelizeManager.associate(managerProps);
         await sequelize.sync();
@@ -93,13 +103,14 @@ export class SequelizeManager implements SequelizeManagerProps {
         props.Space.hasMany(props.Animal);
         props.Animal.belongsTo(props.Space);
         
-        props.Animal.belongsTo(props.Healthbook);
+        props.Animal.hasMany(props.Healthbook);
+        props.Healthbook.belongsTo(props.Healthbook);
         
-        props.Space.belongsTo(props.Maintenancebook);
+        props.Maintenancebook.belongsTo(props.Space);
+        props.Space.hasMany(props.Maintenancebook);
         
-        props.User.belongsToMany(props.Space, {through: 'UserSpace'});
-        props.Space.belongsToMany(props.Ticket, {through: 'SpaceTicket'});
+        props.User.belongsToMany(props.Space, {through: props.UserSpace});
+        props.Space.belongsToMany(props.Ticket, {through: props.SpaceTicket});
     }
-
 }
 export * from './spaceTime.model';

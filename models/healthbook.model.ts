@@ -5,11 +5,7 @@ import {
     DataTypes,
     ModelCtor,
     BelongsToSetAssociationMixin,
-    BelongsToGetAssociationMixin,
-    HasManyGetAssociationsMixin,
-    HasManyAddAssociationMixin,
-    BelongsToManyGetAssociationsMixin,
-    BelongsToManyAddAssociationMixin
+    BelongsToGetAssociationMixin
 } from "sequelize";
 
 import {AnimalInstance} from "./animal.model";
@@ -23,7 +19,10 @@ export interface HealthbookProps {
 
 export interface HealthbookCreationProps extends Optional<HealthbookProps, "id"> {}
 
-export interface HealthbookInstance extends Model<HealthbookProps, HealthbookCreationProps>, HealthbookProps {}
+export interface HealthbookInstance extends Model<HealthbookProps, HealthbookCreationProps>, HealthbookProps {
+    setAnimal: BelongsToSetAssociationMixin<AnimalInstance, "id">;
+    getAnimal: BelongsToGetAssociationMixin<AnimalInstance>;
+}
 
 export default function(sequelize: Sequelize): ModelCtor<HealthbookInstance> {
     return sequelize.define<HealthbookInstance>("Healthbook", {

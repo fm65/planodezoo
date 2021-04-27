@@ -3,13 +3,13 @@ import {check, validationResult} from 'express-validator';
 import { MaintenancebookController } from "../controllers/maintenancebook.controller";
 import { isAuth, hasRole } from '../middlewares/auth.middleware';
 
-const isEmployee = hasRole(1); 
+const isAdmin = hasRole(3); 
 
 const maintenancebookRouter = express.Router();
 
 maintenancebookRouter.post("/add",
     isAuth,
-    isEmployee,
+    isAdmin,
     async function(req, res) {
     const date      = String(new Date());
     const isDone    = req.body.isDone;
@@ -55,6 +55,7 @@ maintenancebookRouter.get("/:id", async function(req,res) {
 
 maintenancebookRouter.delete("/:id", 
 isAuth,
+isAdmin,
 async function(req,res) {
     const maintenancebookController = await MaintenancebookController.getInstance();
     const Maintenancebook = await maintenancebookController.remove(parseInt(req.params.id));

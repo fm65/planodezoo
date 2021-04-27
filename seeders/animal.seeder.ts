@@ -1,3 +1,4 @@
+import { SSL_OP_NETSCAPE_CHALLENGE_BUG } from "node:constants";
 import {SequelizeManager} from "../models";
 
 const ANIMAL_MAX_RANDOM_DATA = 20

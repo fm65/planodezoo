@@ -3,9 +3,9 @@ config();
 import express, {Express} from "express";
 import bodyParser from "body-parser";
 
-import {SequelizeManager} from "./models";
 import {buildRoutes} from "./routes";
 import {buildSeeders} from "./seeders";
+
 
 buildSeeders(); //populate database table with random data
 

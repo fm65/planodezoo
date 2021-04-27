@@ -6,10 +6,6 @@ import {
     ModelCtor,
     BelongsToSetAssociationMixin,
     BelongsToGetAssociationMixin,
-    HasManyGetAssociationsMixin,
-    HasManyAddAssociationMixin,
-    BelongsToManyGetAssociationsMixin,
-    BelongsToManyAddAssociationMixin
 } from "sequelize";
 
 import {SpaceInstance} from "./space.model";
@@ -24,7 +20,10 @@ export interface MaintenancebookProps {
 
 export interface MaintenancebookCreationProps extends Optional<MaintenancebookProps, "id"> {}
 
-export interface MaintenancebookInstance extends Model<MaintenancebookProps, MaintenancebookCreationProps>, MaintenancebookProps {}
+export interface MaintenancebookInstance extends Model<MaintenancebookProps, MaintenancebookCreationProps>, MaintenancebookProps {
+    setSpace: BelongsToSetAssociationMixin<SpaceInstance, "id">;
+    getSpace: BelongsToGetAssociationMixin<SpaceInstance>;
+}
 
 export default function(sequelize: Sequelize): ModelCtor<MaintenancebookInstance> {
     return sequelize.define<MaintenancebookInstance>("Maintenancebook", {

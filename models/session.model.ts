@@ -5,15 +5,14 @@ import {
     DataTypes,
     ModelCtor,
     BelongsToSetAssociationMixin,
-    BelongsToGetAssociationMixin,
-    BelongsToCreateAssociationMixin
+    BelongsToGetAssociationMixin
 } from "sequelize";
 
 import User, {UserInstance} from "./user.model";
 
 export interface SessionProps {
-    id   : number;
-    token: string;
+    id     : number;
+    token  : string;
     UserId?: number
 }
 
