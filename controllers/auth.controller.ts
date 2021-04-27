@@ -35,7 +35,7 @@ export class AuthController {
             where: {
                 login
             }
-        })
+        });
         if (user === null) {
             return null
         }
@@ -47,7 +47,7 @@ export class AuthController {
         const token = await hash(Date.now() + login,5);
         const session = await this.Session.create({
             token,
-        })
+        });
         await session.setUser(user);
         return session;
     }

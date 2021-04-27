@@ -30,14 +30,22 @@ export class MaintenancebookController {
 
     public async create(props: MaintenancebookCreationProps):
         Promise<MaintenancebookInstance | null> {
-        return this.Maintenancebook.create(props);
+        const space = await this.Space.findOne({
+            where: { id: 1 } //TODO
+        })
+        if (space === null) {
+            return null
+        }
+        const maintenancebook = this.Maintenancebook.create(props);
+        (await maintenancebook).setSpace(space);
+        return maintenancebook;
     }
 
     public async getAll(): Promise<MaintenancebookInstance[] | null> {
         const maintenancebook = await this.Maintenancebook.findAll({
             attributes: ['id', 'date', 'comment', 'month', 'isDone'],
-            //include: { model: this.UserSpace },
-            //where: {}
+            include: { model: this.Space, attributes: ['id', 'name', 'description']},
+            limit: 20
         });
         return maintenancebook;
     }

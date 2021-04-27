@@ -1,33 +1,49 @@
 import { ModelCtor, QueryTypes } from "sequelize";
 import { SequelizeManager } from "../models";
 import { HealthbookCreationProps, HealthbookInstance } from "../models/healthbook.model";
+import { AnimalInstance } from "../models/animal.model";
 
 
 export class HealthbookController {
 
     Healthbook: ModelCtor<HealthbookInstance>;
+    Animal: ModelCtor<AnimalInstance>;
 
     private static instance: HealthbookController;
 
     public static async getInstance(): Promise<HealthbookController> {
         if (HealthbookController.instance === undefined) {
-            const { Healthbook } = await SequelizeManager.getInstance();
-            HealthbookController.instance = new HealthbookController(Healthbook);
+            const { Healthbook, Animal } = await SequelizeManager.getInstance();
+            HealthbookController.instance = new HealthbookController(Healthbook, Animal);
         }
         return HealthbookController.instance;
     }
 
-    private constructor(Healthbook: ModelCtor<HealthbookInstance>) {
+    private constructor(Healthbook: ModelCtor<HealthbookInstance>, Animal: ModelCtor<AnimalInstance>) {
         this.Healthbook = Healthbook;
+        this.Animal     = Animal;
     }
 
     public async create(props: HealthbookCreationProps):
         Promise<HealthbookInstance | null> {
-        return this.Healthbook.create(props);
+        const animal = await this.Animal.findOne({
+            where: { id: 1 } //TODO
+        })
+        if (animal === null) {
+            return null
+        }
+        const healthbook = this.Healthbook.create(props);
+        (await healthbook).setAnimal(animal);
+
+        return healthbook;
     }
 
     public async getAll(): Promise<HealthbookInstance[] | null> {
-        const healthbooks = await this.Healthbook.findAll();
+        const healthbooks = await this.Healthbook.findAll({
+            attributes: ['id', 'date', 'comment', 'isDone'],
+            include: {model: this.Animal, attributes: ['id', 'name', 'species']},
+            limit: 50
+        });
         return healthbooks;
     }
 

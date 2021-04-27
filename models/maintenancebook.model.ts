@@ -16,6 +16,7 @@ export interface MaintenancebookProps {
     isDone : boolean;
     comment: string;
     month  : number;
+    SpaceId?: number;
 }
 
 export interface MaintenancebookCreationProps extends Optional<MaintenancebookProps, "id"> {}

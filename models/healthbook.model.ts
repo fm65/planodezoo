@@ -11,10 +11,11 @@ import {
 import {AnimalInstance} from "./animal.model";
 
 export interface HealthbookProps {
-    id     : number;
-    date   : string;
-    isDone : boolean;
-    comment: string;
+    id       : number;
+    date     : string;
+    isDone   : boolean;
+    comment  : string;
+    AnimalId?: number;
 }
 
 export interface HealthbookCreationProps extends Optional<HealthbookProps, "id"> {}

@@ -9,7 +9,6 @@ import {buildSeeders} from "./seeders";
 
 //buildSeeders(); //populate database table with random data
 
-
 const app: Express = express();
 
 app.use(bodyParser.json());
