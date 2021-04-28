@@ -95,6 +95,18 @@ export class _SpaceController {
         });
         return spaces;
     }
+
+    public async getById(id: number): Promise<SpaceInstance | null> {
+        const space = await this.Space.findOne({
+            where: {
+                id
+            }
+        })
+        if (space !== null) {
+            return space;
+        }
+        return null;
+    }
  
     public async create(props: SpaceCreationProps):
         Promise<SpaceInstance | null> {

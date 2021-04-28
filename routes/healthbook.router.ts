@@ -66,6 +66,25 @@ async function(req,res) {
     }
 })
 
+healthbookRouter.put("/:id", async function (req, res) {
+    const healthbookController = await HealthbookController.getInstance();
+    let healthbook = await healthbookController.getById(parseInt(req.params.id));
+    if (healthbook !== null) {
+        await healthbook.update({ 
+            date: req.body.date,
+            isDone: req.body.isDone,
+            comment: req.body.comment,
+            animalId: req.body.animalId
+        })
+        res.send(healthbook);
+        res.status(201).end();
+    } else {
+        res.send("No such healthbook");
+        res.status(404).end();
+    }
+
+})
+
 export {
     healthbookRouter
 };

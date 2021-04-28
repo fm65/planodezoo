@@ -68,6 +68,26 @@ async function(req,res) {
     }
 })
 
+maintenancebookRouter.put("/:id", async function (req, res) {
+    const maintenancebookController = await MaintenancebookController.getInstance();
+    let maintenancebook = await maintenancebookController.getById(parseInt(req.params.id));
+    if (maintenancebook !== null) {
+        await maintenancebook.update({ 
+            date: req.body.date,
+            isDone: req.body.isDone,
+            comment: req.body.comment,
+            month: req.body.spaceId,
+            spaceId: req.body.spaceId
+        })
+        res.send(maintenancebook);
+        res.status(201).end();
+    } else {
+        res.send("No such maintenancebook");
+        res.status(404).end();
+    }
+
+})
+
 export {
     maintenancebookRouter
 };

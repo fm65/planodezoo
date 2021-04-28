@@ -76,6 +76,22 @@ async function(req,res) {
     }
 })
 
+ticketRouter.put("/:type", async function (req, res) {
+    const ticketController = await TicketController.getInstance();
+    let ticket = await ticketController.getByType(parseInt(req.params.type));
+    if (ticket !== null) {
+        await ticket.update({ 
+            price: req.body.price,
+            date: req.body.date
+        })
+        res.send(ticket);
+        res.status(201).end();
+    } else {
+        res.send("No such ticket");
+        res.status(404).end();
+    }
+
+})
 
 export {
     ticketRouter

@@ -37,9 +37,9 @@ spaceRouter.get("/stats/week/:id/:date", async function(req, res) {
     } 
 });
 
-spaceRouter.get("/access/:space_id/:user_id", async function(req,res) {
+spaceRouter.get("/access/:spaceId/:userId", async function(req,res) {
     const ticketController = await TicketController.getInstance();
-    const userAuthorized = await ticketController.checkValidation(parseInt(req.params.space_id), parseInt(req.params.user_id));
+    const userAuthorized = await ticketController.checkValidation(parseInt(req.params.spaceId), parseInt(req.params.userId));
     res.status(200);
     res.json(userAuthorized);
 })
@@ -91,5 +91,29 @@ spaceRouter.post("/", 
         res.status(409).end();
     }​​​​​​
 }​​​​​​);
+
+spaceRouter.put("/:id", async function (req, res) {
+    const spaceController = await _SpaceController.getInstance();
+    let space = await spaceController.getById(parseInt(req.params.id));
+    if (space !== null) {
+        await space.update({ 
+            name: req.body.name,
+            description: req.body.description,
+            image: req.body.image,
+            type: req.body.type,
+            capacity: req.body.capacity,
+            duration: req.body.duration,
+            opening: req.body.opening,
+            closing: req.body.closing,
+            disabledAccess: req.body.disabledAccess,
+        })
+        res.send(space);
+        res.status(201).end();
+    } else {
+        res.send("No such space");
+        res.status(404).end();
+    }
+
+})
 
 export default spaceRouter;

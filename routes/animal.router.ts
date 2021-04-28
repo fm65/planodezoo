@@ -74,3 +74,22 @@ async function(req,res) {
 export {
     animalRouter
 };
+
+animalRouter.put("/:id", async function (req, res) {
+    const animalController = await AnimalController.getInstance();
+    let animal = await animalController.getById(parseInt(req.params.id));
+    if (animal !== null) {
+        await animal.update({ 
+            name: req.body.name,
+            species: req.body.species,
+            description: req.body.description,
+            spaceId: req.body.spaceId
+        })
+        res.send(animal);
+        res.status(201).end();
+    } else {
+        res.send("No such animal");
+        res.status(404).end();
+    }
+
+})

@@ -37,13 +37,13 @@ export class TicketController {
 
     public async getByUser(id: Number): Promise<number | null> {
         const ticketController = await SequelizeManager.getInstance();
-        const res = await ticketController.sequelize.query(`SELECT ticket_type FROM User WHERE id = ${id}`);
+        const res = await ticketController.sequelize.query(`SELECT ticketType FROM User WHERE id = ${id}`);
         const data = res[0];
         if (Array.isArray(data)) {
             const rows = data as RowDataPacket[];
             if (rows.length > 0) {
                 const row = rows[0];
-                return row["ticket_type"];
+                return row["ticketType"];
             };
         }
         return null;
@@ -70,18 +70,18 @@ export class TicketController {
         return null;
     }
 
-    public async checkValidation(space_id: number, user_id: number): Promise<boolean> {
+    public async checkValidation(spaceId: number, userId: number): Promise<boolean> {
         const spaceTicket = await SequelizeManager.getInstance();
-        const ticket_type = await this.getByUser(user_id);
-        const res = await spaceTicket.sequelize.query(`SELECT * FROM SpaceTicket WHERE ticket_type = ${ticket_type}`);
+        const ticketType = await this.getByUser(userId);
+        const res = await spaceTicket.sequelize.query(`SELECT * FROM SpaceTicket WHERE ticketType = ${ticketType}`);
         if (res !== null) {
             const data = res[0];
             const spaces: number[] = [];
             const rows = data as RowDataPacket[];
             rows.forEach(row => {
-                spaces.push(row.space_id);
+                spaces.push(row.spaceId);
             })
-            return spaces.includes(space_id);
+            return spaces.includes(spaceId);
         }
         return false
     }
