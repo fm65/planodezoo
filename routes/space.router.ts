@@ -9,7 +9,7 @@ const isAdmin = hasRole(3);
 
 const spaceRouter = express.Router();
 
-spaceRouter.get("/", async function(req, res) {
+spaceRouter.get("/", isAuth, async function(req, res) {
     const spaceController = await _SpaceController.getInstance();
     const spaces = await spaceController.getAll();
     if(spaces !== null) {
@@ -20,14 +20,14 @@ spaceRouter.get("/", async function(req, res) {
     }
 });
 
-spaceRouter.get("/stats/:id/:date", async function(req, res) {
+spaceRouter.get("/stats/:id/:date", isAuth, async function(req, res) {
     const connection = await DatabaseUtils.getConnection();
     const spaceController = new SpaceController(connection);
     const spaceList = await spaceController.getStatsBySpace(parseInt(req.params.id), req.params.date);
     res.json(spaceList);  
 });
 
-spaceRouter.get("/stats/week/:id/:date", async function(req, res) {
+spaceRouter.get("/stats/week/:id/:date", isAuth, async function(req, res) {
     const connection = await DatabaseUtils.getConnection();
     const spaceController = new SpaceController(connection);
     const spaceList = await spaceController.getStatsBySpace(parseInt(req.params.id), req.params.date);
@@ -37,7 +37,8 @@ spaceRouter.get("/stats/week/:id/:date", async function(req, res) {
     } 
 });
 
-spaceRouter.get("/access/:spaceId/:userId", async function(req,res) {
+
+spaceRouter.get("/access/:space_id/:user_id", isAuth, async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const userAuthorized = await ticketController.checkValidation(parseInt(req.params.spaceId), parseInt(req.params.userId));
     res.status(200);
