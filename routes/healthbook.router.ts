@@ -74,7 +74,7 @@ healthbookRouter.put("/:id", async function (req, res) {
             date: req.body.date,
             isDone: req.body.isDone,
             comment: req.body.comment,
-            animalId: req.body.animalId
+            AnimalId: req.body.AnimalId
         })
         res.send(healthbook);
         res.status(201).end();

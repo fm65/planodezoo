@@ -37,13 +37,13 @@ export class TicketController {
 
     public async getByUser(id: Number): Promise<number | null> {
         const ticketController = await SequelizeManager.getInstance();
-        const res = await ticketController.sequelize.query(`SELECT ticketType FROM User WHERE id = ${id}`);
+        const res = await ticketController.sequelize.query(`SELECT TicketType FROM User WHERE id = ${id}`);
         const data = res[0];
         if (Array.isArray(data)) {
             const rows = data as RowDataPacket[];
             if (rows.length > 0) {
                 const row = rows[0];
-                return row["ticketType"];
+                return row["TicketType"];
             };
         }
         return null;
@@ -73,13 +73,13 @@ export class TicketController {
     public async checkValidation(spaceId: number, userId: number): Promise<boolean> {
         const spaceTicket = await SequelizeManager.getInstance();
         const ticketType = await this.getByUser(userId);
-        const res = await spaceTicket.sequelize.query(`SELECT * FROM SpaceTicket WHERE ticketType = ${ticketType}`);
+        const res = await spaceTicket.sequelize.query(`SELECT * FROM SpaceTicket WHERE TicketType = ${ticketType}`);
         if (res !== null) {
             const data = res[0];
             const spaces: number[] = [];
             const rows = data as RowDataPacket[];
             rows.forEach(row => {
-                spaces.push(row.spaceId);
+                spaces.push(row.SpaceId);
             })
             return spaces.includes(spaceId);
         }

@@ -77,7 +77,7 @@ maintenancebookRouter.put("/:id", async function (req, res) {
             isDone: req.body.isDone,
             comment: req.body.comment,
             month: req.body.spaceId,
-            spaceId: req.body.spaceId
+            SpaceId: req.body.SpaceId
         })
         res.send(maintenancebook);
         res.status(201).end();

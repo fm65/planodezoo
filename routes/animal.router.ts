@@ -83,7 +83,7 @@ animalRouter.put("/:id", async function (req, res) {
             name: req.body.name,
             species: req.body.species,
             description: req.body.description,
-            spaceId: req.body.spaceId
+            SpaceId: req.body.SpaceId
         })
         res.send(animal);
         res.status(201).end();

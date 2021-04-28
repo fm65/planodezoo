@@ -108,7 +108,7 @@ authRouter.put("/:id", async function (req, res) {
             password: req.body.password,
             email: req.body.email,
             role: req.body.role,
-            ticketType:req.body.ticketType
+            TicketType:req.body.TicketType
         })
         res.send(user);
         res.status(201).end();
