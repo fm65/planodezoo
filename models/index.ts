@@ -9,6 +9,7 @@ import healthbookCreator, {HealthbookInstance}           from "./healthbook.mode
 import maintenancebookCreator, {MaintenancebookInstance} from "./maintenancebook.model";
 import userSpaceCreator, {UserSpaceInstance}             from "./userSpace.model";
 import spaceTicketCreator, {SpaceTicketInstance}         from "./spaceTicket.model";
+import dateCreator, {DateInstance}                       from "./date.model";
 
 
 export interface SequelizeManagerProps {
@@ -22,6 +23,7 @@ export interface SequelizeManagerProps {
     Maintenancebook: ModelCtor<MaintenancebookInstance>;
     UserSpace      : ModelCtor<UserSpaceInstance>;
     SpaceTicket    : ModelCtor<SpaceTicketInstance>;
+    Date           : ModelCtor<DateInstance>;
 }
 
 export class SequelizeManager implements SequelizeManagerProps {
@@ -38,6 +40,7 @@ export class SequelizeManager implements SequelizeManagerProps {
     Maintenancebook: ModelCtor<MaintenancebookInstance>;
     UserSpace      : ModelCtor<UserSpaceInstance>;
     SpaceTicket    : ModelCtor<SpaceTicketInstance>;
+    Date           : ModelCtor<DateInstance>;
 
     private constructor(props: SequelizeManagerProps) {
         this.sequelize       = props.sequelize;
@@ -49,7 +52,8 @@ export class SequelizeManager implements SequelizeManagerProps {
         this.Healthbook      = props.Healthbook;
         this.Maintenancebook = props.Maintenancebook;
         this.UserSpace       = props.UserSpace;
-        this.SpaceTicket       = props.SpaceTicket;
+        this.SpaceTicket     = props.SpaceTicket;
+        this.Date            = props.Date;
 
     }
 
@@ -86,7 +90,8 @@ export class SequelizeManager implements SequelizeManagerProps {
             Healthbook     : healthbookCreator(sequelize),
             Maintenancebook: maintenancebookCreator(sequelize),
             UserSpace      : userSpaceCreator(sequelize),
-            SpaceTicket    : spaceTicketCreator(sequelize)
+            SpaceTicket    : spaceTicketCreator(sequelize),
+            Date           : dateCreator(sequelize)
         }
         SequelizeManager.associate(managerProps);
         await sequelize.sync();
@@ -108,6 +113,9 @@ export class SequelizeManager implements SequelizeManagerProps {
         
         props.Maintenancebook.belongsTo(props.Space);
         props.Space.hasMany(props.Maintenancebook);
+
+        props.Date.belongsTo(props.Space);
+        props.Space.hasMany(props.Date);
         
         props.User.belongsToMany(props.Space, {through: props.UserSpace});
         props.Space.belongsToMany(props.Ticket, {through: props.SpaceTicket});

@@ -38,7 +38,7 @@ spaceRouter.get("/stats/week/:id/:date", isAuth, async function(req, res) {
 });
 
 
-spaceRouter.get("/access/:space_id/:user_id", isAuth, async function(req,res) {
+spaceRouter.get("/access/:SpaceId/:userId", isAuth, async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const userAuthorized = await ticketController.checkValidation(parseInt(req.params.spaceId), parseInt(req.params.userId));
     res.status(200);

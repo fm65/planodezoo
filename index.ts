@@ -19,10 +19,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, function() {
     console.log(`Listening on ${port}...`);
 });
-
-/*app.use(function(req, res, next){
-    req.setTimeout(5, function(){
-        res.status(401).json("Error: Unauthorized access");
-    });
-    next();
-});*/

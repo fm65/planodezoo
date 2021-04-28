@@ -18,8 +18,6 @@ export interface SpaceTicketProps {
     TicketType? : number;
 }
 
-// export interface SpaceTicketCreationProps extends Optional<SpaceTicketProps, "space_id"> {}
-
 export interface SpaceTicketInstance extends Model<SpaceTicketProps>, SpaceTicketProps {
     getTickets: BelongsToManyGetAssociationsMixin<TicketInstance>;
     addTicket : BelongsToManyAddAssociationMixin<TicketInstance, "type">;

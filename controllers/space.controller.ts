@@ -12,14 +12,14 @@ export class SpaceController {
     }
 
     async getVisitorsBySpace(id: Number): Promise<SpaceTime[]> {
-        const res = await this.connection.query(`SELECT date_id, space_id, visitors, name FROM space_has_date INNER JOIN space on id = space_id WHERE space_id = ${id} ORDER BY date_id`);
+        const res = await this.connection.query(`SELECT Date.id, SpaceId, visitors, name FROM Date INNER JOIN Space on Space.id = SpaceId WHERE SpaceId = ${id}`);
         const data = res[0];
         if(Array.isArray(data)) {
             return (data as RowDataPacket[]).map(function(row) {
                 return new SpaceTime({
-                    spaceId: row["space_id"],
+                    spaceId: row["SpaceId"],
                     spaceName: row["name"],
-                    date: row["date_id"],
+                    date: row["id"],
                     visitors: row["visitors"]
                 })
             });
@@ -28,7 +28,7 @@ export class SpaceController {
     }
 
     async getNbTicketsbyDate(date: String): Promise<number>{
-        const res = await this.connection.query(`SELECT COUNT(*) AS number FROM ticket WHERE date <= '${date}' AND validationDate >= '${date}'`);
+        const res = await this.connection.query(`SELECT COUNT(*) AS number FROM Ticket WHERE date <= '${date}' AND Ticket.date >= '${date}'`);
         const data = res[0];
         if(Array.isArray(data)) {
             const rows = data as RowDataPacket[];
