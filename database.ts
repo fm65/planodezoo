@@ -9,7 +9,7 @@ export class DatabaseUtils {
             DatabaseUtils.connection = await createConnection({
                 host: 'localhost',
                 user: 'root',
-                password: 'root', // ""
+                password: '', // ""
                 database: "zoodb",
                 port: 3306 // 3306
             });
