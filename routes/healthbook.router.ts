@@ -30,7 +30,7 @@ healthbookRouter.post("/add",
     }
 });
 
-healthbookRouter.get("/", async function(req, res) {
+healthbookRouter.get("/", isAuth, async function(req, res) {
     const healthbookController = await HealthbookController.getInstance();
     const healthbook = await healthbookController.getAll();
     if(healthbook !== null) {
@@ -41,7 +41,7 @@ healthbookRouter.get("/", async function(req, res) {
     }
 });
 
-healthbookRouter.get("/:id", async function(req,res) {
+healthbookRouter.get("/:id", isAuth, async function(req,res) {
     const healthbookController = await HealthbookController.getInstance();
     const healthbook = await healthbookController.getById(parseInt(req.params.id));
     if(healthbook !== null) {

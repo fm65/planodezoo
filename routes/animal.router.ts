@@ -35,7 +35,7 @@ animalRouter.post("/add",
     }
 });
 
-animalRouter.get("/", async function(req, res) {
+animalRouter.get("/", isAuth, async function(req, res) {
     const animalController = await AnimalController.getInstance();
     const animals = await animalController.getAll();
     if(animals !== null) {
@@ -46,7 +46,7 @@ animalRouter.get("/", async function(req, res) {
     }
 });
 
-animalRouter.get("/:id", async function(req,res) {
+animalRouter.get("/:id", isAuth, async function(req,res) {
     const animalController = await AnimalController.getInstance();
     const animal = await animalController.getById(parseInt(req.params.id));
     if(animal !== null) {

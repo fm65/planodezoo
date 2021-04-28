@@ -34,7 +34,7 @@ ticketRouter.post("/add",
     }
 });
 
-ticketRouter.get("/", async function(req, res) {
+ticketRouter.get("/", isAuth, async function(req, res) {
     const ticketController = await TicketController.getInstance();
     const ticket = await ticketController.getAll();
     if(ticket !== null) {
@@ -45,13 +45,13 @@ ticketRouter.get("/", async function(req, res) {
     }
 });
 
-ticketRouter.get("/user/:id", async function(req,res) {
+ticketRouter.get("/user/:id", isAuth, async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const ticketType = await ticketController.getByUser(parseInt(req.params.id));
     res.json(ticketType);
 });
 
-ticketRouter.get("/type/:type", async function(req,res) {
+ticketRouter.get("/type/:type", isAuth, async function(req,res) {
     const ticketController = await TicketController.getInstance();
     const ticket = await ticketController.getByType(parseInt(req.params.type));
     if(ticket !== null) {

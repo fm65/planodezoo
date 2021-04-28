@@ -31,7 +31,7 @@ maintenancebookRouter.post("/add",
     }
 });
 
-maintenancebookRouter.get("/", async function(req, res) {
+maintenancebookRouter.get("/", isAuth, async function(req, res) {
     const maintenancebookController = await MaintenancebookController.getInstance();
     const maintenancebook = await maintenancebookController.getAll();
     if(maintenancebook !== null) {
@@ -42,7 +42,7 @@ maintenancebookRouter.get("/", async function(req, res) {
     }
 });
 
-maintenancebookRouter.get("/:id", async function(req,res) {
+maintenancebookRouter.get("/:id", isAuth, async function(req,res) {
     const maintenancebookController = await MaintenancebookController.getInstance();
     const maintenancebook = await maintenancebookController.getById(parseInt(req.params.id));
     if(maintenancebook !== null) {

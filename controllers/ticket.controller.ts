@@ -31,7 +31,10 @@ export class TicketController {
     }
 
     public async getAll(): Promise<TicketInstance[] | null> {
-        const tickets = await this.Ticket.findAll();
+        const tickets = await this.Ticket.findAll({
+            attributes: ['type', 'price', 'date'],
+            limit: 20
+        });
         return tickets;
     }
 

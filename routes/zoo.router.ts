@@ -4,7 +4,7 @@ import { isAuth } from '../middlewares/auth.middleware';
 
 const zooRouter = express.Router();
 
-zooRouter.get("/can-open", async function (req, res) {
+zooRouter.get("/can-open", isAuth, async function (req, res) {
     const zooController = await ZooController.getInstance();
     const rolesOK = await zooController.canZooOpen();
     if (rolesOK === null) {
